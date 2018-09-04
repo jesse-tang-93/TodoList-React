@@ -8,8 +8,7 @@ class TodoItem extends Component {
     }
   }
   render(){
-    const content=this.props.content
-    const index =this.props.index
+    const {content,index} = this.props
     const texts =(index +1 ) +'、' + content
     return(
       <li className="todo_item"><span className={this.state.itemStatus ? "item_success" : ""} dangerouslySetInnerHTML={{__html: texts}}></span><span className="del_btn" onClick={this.delItems.bind(this)}>删除</span><span className="del_btn" onClick={this.ItemSuccess.bind(this)}>完成</span></li>
