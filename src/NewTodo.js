@@ -1,5 +1,7 @@
 import React,{ Component } from 'react'
 import { Input,Button,List } from 'antd';
+import {getInputChange,getChangeListAction,getItemDelAction} from'./store/actionCreators'
+import axios from 'axios'
 import store from './store'
 import 'antd/dist/antd.css';
 
@@ -23,10 +25,7 @@ class NewTodo extends Component{
   // 监听input输入获取input数据
   inputChange(e){
     const value = e.target.value
-    const action={
-      type :'change_input',
-      value: value
-    }
+    const action=getInputChange(value)
     store.dispatch(action)
   }
   // 监听回车键盘事件
@@ -42,10 +41,12 @@ class NewTodo extends Component{
       alert('请输入内容')
       return false
     }
-    const action ={
-      type : 'change_list'
-    }
+    const action =getChangeListAction()
     // dispatch 派遣发送
+    store.dispatch(action)
+  }
+  handleItemDelete(index){
+    const action =getItemDelAction(index)
     store.dispatch(action)
   }
   render(){
@@ -60,10 +61,15 @@ class NewTodo extends Component{
           style={{width:'300px',marginTop:'10px'}}
           bordered
           dataSource={this.state.list}
-          renderItem={item => (<List.Item>{item}</List.Item>)}
+          renderItem={(item ,index)=> (<List.Item onClick={this.handleItemDelete.bind(this,index)}>{item}</List.Item>)}
         />
       </div>
     )
+  }
+  componentDidMount(){
+    axios.get('/api/v1/book').then(()=>{
+
+    })
   }
 }
 export default NewTodo
